@@ -1,0 +1,11 @@
+---
+- name: Fetch files from execution node to Control server
+  fetch:
+    src: "{{ reportdir }}"
+    dest: "{{ hostvars.localhost.base_dir }}/"
+    flat: yes
+  register: fetch_result
+  failed_when: fetch_result is failed
+  until: fetch_result is succeeded
+  retries: 10
+  delay: 5

@@ -1,0 +1,3 @@
+    - name: To Combine both the list
+      set_fact:
+        finalresult: "{{ finalresult|default([]) + output.results | map(attribute='stdout')| list | flatten }}"  # flatten makes the multiple list to single list

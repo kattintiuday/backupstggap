@@ -1,0 +1,14 @@
+    - name: Execute DSMADMC command for each stgpool-copypool pair
+      dsmadmc:
+        #command: "SELECT stgpool_name, CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) as total_data_gb,((SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name) - (SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.copypool }}' GROUP BY stgpool_name)) as pending_copy_gb FROM occupancy  WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name >> /tmp/copypoolgap.csv"
+        #command: "SELECT stgpool_name as PRIMARYPOOL_NAME,((select stgpool_name as COPYPOOL_NAME from stgpools where stgpool_name='{{ item.copypool }}' GROUP BY stgpool_name)),CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) as total_data_gb,((SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name) - (SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.copypool }}' GROUP BY stgpool_name)) as pending_copy_gb FROM occupancy  WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name >> /tmp/copypoolgap.csv"
+        command: "select SUBSTR(CHAR(status.server_name),1,14) as TSM_SERVER ,occupancy.stgpool_name as PRIMARYPOOL_NAME,((select stgpool_name as COPYPOOL_NAME from stgpools where stgpool_name='{{ item.copypool }}' GROUP BY stgpool_name)), CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) as total_data_gb,((SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.stgpool }}') - (SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.copypool }}')) as pending_copy_gb FROM status, occupancy  WHERE occupancy.stgpool_name='{{ item.stgpool }}' GROUP BY occupancy.stgpool_name,status.server_name >> /tmp/copypoolgap.csv"
+        se: "{{ lookup('env', 'tsm_server_node') }}"
+        id: "{{ lookup('env', 'tsm_app_user') }}"
+        pa: "{{ lookup('env', 'tsm_app_password') }}"
+        dataonly: true
+        comma: true
+      register: output
+      loop: "{{ stgpool_copy_pairs }}"
+      loop_control:
+        loop_var: item

@@ -1,0 +1,4 @@
+    - name: " Remove Temp file "
+      file:
+        path: "/tmp/copypoolgap.csv"
+        state: absent

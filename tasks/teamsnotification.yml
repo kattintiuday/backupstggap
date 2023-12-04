@@ -1,0 +1,14 @@
+    - name: Read CSV file content
+      slurp:
+        src: /tmp/copypoolgap.csv
+      register: csv_content
+
+    - name: Send Microsoft Team's notification
+      uri:
+        url: "{{ team_webhook }}"
+        method: POST
+        body_format: json
+        body:
+          title: "Hello, This is a Backupstg copy status"
+          #text: \"{{ finalresult | join(' ') }} \"
+          text: "{{ csv_content['content'] | b64decode | to_json | from_json }}"

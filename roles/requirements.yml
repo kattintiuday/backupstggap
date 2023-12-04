@@ -1,0 +1,19 @@
+---
+# from GitHub, overriding the name and specifying a tag
+# global socks tunnel role
+- src: git+https://github.kyndryl.net/Continuous-Engineering/ansible-role-event-socks-tunnel.git
+  scm: "git"
+  version: 21.10/main
+  name: ansible-role-event-socks-tunnel
+
+# global ansible RC role
+- src: git+https://github.kyndryl.net/Continuous-Engineering/ansible_role_returncode.git
+  scm: "git"
+  version: 1.2/main
+  name: returncode
+
+  # Generic role for uploads to SFS
+- name: sfs_upload
+  scm: git
+  src: https://github.kyndryl.net/Continuous-Engineering/ansible_role_sfs_upload.git
+  version: 4.0/main

@@ -1,0 +1,5 @@
+    - name: " To Create File with current date "
+      lineinfile:
+            path: "/tmp/copypoolgap.csv"
+            line: "TSM_SERVER,PRIMARYPOOL_NAME,COPYPOOL_NAME,PRIMARY_DATA_GB,PENDING_COPY_GB"
+            create: true
