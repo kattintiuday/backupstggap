@@ -26,4 +26,4 @@
     - fail:
         msg: "Rescue task executed: TSM Server is not up"
       when: 206 in output.results|map(attribute='rc')
-      #failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout')|list)
+      failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout'))
