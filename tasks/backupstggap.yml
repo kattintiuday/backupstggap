@@ -22,8 +22,8 @@
     - debug:
         var: output1
 
-    rescue:
-      - fail:
-          msg: "Rescue task executed: TSM Server is not up"
-        when: ("ANS1017E" in output.results|map(attribute='stdout')|list)
-        failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout')|list)
+  rescue:
+    - fail:
+        msg: "Rescue task executed: TSM Server is not up"
+      when: ("ANS1017E" in output.results|map(attribute='stdout')|list)
+      failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout')|list)
