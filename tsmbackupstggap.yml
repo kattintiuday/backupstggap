@@ -12,6 +12,13 @@
             - include: tasks/backupstggap.yml
 
           rescue:
+
+
+            - name: Rescue task
+              debug:
+                msg: "Rescue task executed: TSM Server is not up"
+              when: 206 in output.results|map(attribute='rc')
+
             - fail:
                 msg: "Rescue task executed: TSM Server is not up"
               when: 206 in output.results|map(attribute='rc')
