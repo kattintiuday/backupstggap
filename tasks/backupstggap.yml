@@ -15,8 +15,13 @@
       loop_control:
         loop_var: item
 
+    - name: To set fact to combine all files
+      ansible.builtin.set_fact:
+        output1: "{{ output1|default([]) + map(attribute='rc')|list }}"
+
     - debug:
-        msg: "{{ output }}"
+        var: output1
+
   rescue:
     - fail:
         msg: "Rescue task executed: TSM Server is not up"
