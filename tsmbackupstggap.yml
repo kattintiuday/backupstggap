@@ -17,6 +17,12 @@
               when: 206 in output.results|map(attribute='rc')
               failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout'))
 
+            - fail:
+                msg: "Rescue task executed: No match found using this criteria"
+              when: ANR2034E in output.results|map(attribute='rc')
+              failed_when: ("No match found using this criteria" in output.results|map(attribute='stdout'))
+
+
     - name: "To get the copypool gap for respective primary pools"
       hosts: "{{ execution_node }}"
       gather_facts: false
