@@ -19,7 +19,7 @@
 
             - fail:
                 msg: "Rescue task executed: No match found using this criteria"
-              when: ANR2034E in output.results|map(attribute='rc')
+              when: ANR2034E in output.results|map(attribute='stdout')
               failed_when: ("No match found using this criteria" in output.results|map(attribute='stdout'))
 
 
