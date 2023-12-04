@@ -1,5 +1,3 @@
-- name: Start the Block
-  block:
     - name: Execute DSMADMC command for each stgpool-copypool pair
       dsmadmc:
         #command: "SELECT stgpool_name, CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) as total_data_gb,((SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name) - (SELECT CAST(FLOAT(SUM(logical_mb))/1024 AS DEC(8,2)) FROM occupancy WHERE stgpool_name='{{ item.copypool }}' GROUP BY stgpool_name)) as pending_copy_gb FROM occupancy  WHERE stgpool_name='{{ item.stgpool }}' GROUP BY stgpool_name >> /tmp/copypoolgap.csv"
@@ -15,15 +13,3 @@
       loop_control:
         loop_var: item
 
-    - name: To set fact to combine all files
-      ansible.builtin.set_fact:
-        output1: "{{ output1|default([]) + output.results|map(attribute='rc')|list }}"
-
-    - debug:
-        var: output1
-
-  rescue:
-    - fail:
-        msg: "Rescue task executed: TSM Server is not up"
-      when: 206 in output.results|map(attribute='rc')
-      failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout'))
