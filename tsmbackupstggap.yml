@@ -3,6 +3,7 @@
       hosts: "{{ execution_node }}"
       gather_facts: false
       ignore_errors: true
+      become: true
       tasks:
         - name: Start the Block
           block:
