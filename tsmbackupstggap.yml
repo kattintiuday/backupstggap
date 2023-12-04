@@ -2,7 +2,7 @@
     - name: "To get the copypool gap for respective primary pools"
       hosts: "{{ execution_node }}"
       gather_facts: false
-      ignore_errors: true
+      ignore_errors: false
       become: true
       tasks:
         - name: Start the Block
