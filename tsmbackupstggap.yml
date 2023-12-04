@@ -1,15 +1,15 @@
 ---
-    - name: 'Including Role for SFS'
-      hosts: localhost
-      connection: local
-      ignore_errors: true
-      tasks:
-          - name: 'SFS Role Prepare stage to setup temp directory on ansible tower'
-            include_role:
-              name: sfs_upload
-            vars:
-              sfs_upload_stage: "prepare"
-              output_dir: "/tmp/tsm_backupstg"
+#    - name: 'Including Role for SFS'
+#      hosts: localhost
+#      connection: local
+#      ignore_errors: true
+#      tasks:
+#          - name: 'SFS Role Prepare stage to setup temp directory on ansible tower'
+#            include_role:
+#              name: sfs_upload
+#            vars:
+#              sfs_upload_stage: "prepare"
+#              output_dir: "/tmp/tsm_backupstg"
 
     - name: "To get the copypool gap for respective primary pools"
       hosts: "{{ execution_node }}"
