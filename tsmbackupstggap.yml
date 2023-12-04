@@ -10,8 +10,3 @@
             - include: tasks/removetemfile.yml
             - include: tasks/createtempfile.yml
             - include: tasks/backupstggap.yml
-          rescue:
-            - fail:
-                msg: "Rescue task executed: TSM Server is not up"
-              when: output.rc == 206
-              failed_when: ("Unable to establish session with server" in output.stdout_lines)
