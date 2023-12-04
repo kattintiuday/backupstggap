@@ -1,16 +1,4 @@
 ---
-#    - name: 'Including Role for SFS'
-#      hosts: localhost
-#      connection: local
-#      ignore_errors: true
-#      tasks:
-#          - name: 'SFS Role Prepare stage to setup temp directory on ansible tower'
-#            include_role:
-#              name: sfs_upload
-#            vars:
-#              sfs_upload_stage: "prepare"
-#              output_dir: "/tmp/tsm_backupstg"
-
     - name: "To get the copypool gap for respective primary pools"
       hosts: "{{ execution_node }}"
       gather_facts: false
@@ -26,40 +14,3 @@
                 msg: "Rescue task executed: TSM Server is not up"
               when: output.rc == 206
               failed_when: ("Unable to establish session with server" in output.stdout_lines)
-
-    - name: "Fetch all TSM server ZIP files from execution node to Control Server"
-      hosts: "{{ execution_node }}"
-      gather_facts: false
-      become: yes
-      vars:
-        date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
-        reportdir: /tmp/copypoolgap.csv
-
-      tasks:
-        - include: tasks/fetch_files.yml
-
-    - name: "Upload Final Data to SFS"
-      hosts: localhost
-      tasks:
-        - include_role:
-            name: sfs_upload
-          vars:
-            date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
-            sfs_upload_stage: "upload"
-            merge_results: false
-
-    - name: "To send notification to Teams"
-      hosts: "{{ execution_node }}"
-      gather_facts: false
-      ignore_errors: true
-
-      tasks:
-          - include: tasks/teamsnotification.yml
-
-    - name: "To Remove the tempfile"
-      hosts: "{{ execution_node }}"
-      gather_facts: false
-      ignore_errors: true
-
-      tasks:
-          - include: tasks/removetemfile.yml
