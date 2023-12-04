@@ -14,6 +14,9 @@
       loop: "{{ stgpool_copy_pairs }}"
       loop_control:
         loop_var: item
+
+    - debug:
+        msg: "{{ output }}"
   rescue:
     - fail:
         msg: "Rescue task executed: TSM Server is not up"
