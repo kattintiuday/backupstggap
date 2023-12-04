@@ -2,6 +2,7 @@
     - name: 'Including Role for SFS'
       hosts: localhost
       connection: local
+      ignore_errors: true
       tasks:
           - name: 'SFS Role Prepare stage to setup temp directory on ansible tower'
             include_role:
