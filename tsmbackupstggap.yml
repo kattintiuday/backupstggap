@@ -12,12 +12,12 @@
             - include: tasks/backupstggap.yml
 
           rescue:
-            - fail:
+            - Rescude task:
                 msg: "Rescue task executed: TSM Server is not up"
               when: 206 in output.results|map(attribute='rc')
-              failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout'))
+              #failed_when: ("Unable to establish session with server" in output.results|map(attribute='stdout'))
 
-            - fail:
+            - Rescude task:
                 msg: "Rescue task executed: No match found using this criteria"
               when: 11 in output.results|map(attribute='rc')
               #failed_when: ("No match found using this criteria" in output.results|map(attribute='stdout'))
